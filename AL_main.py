@@ -45,9 +45,10 @@ def format_climatedata(raw_data):
 
 st.title("Grow Lights - Average DLI")
 
+system = st.radio("Choose system", ["LED", "Hybrid"], index=0, key="system", on_change=lambda: st.session_state.pop("results", None))
+
 with st.form("controls", clear_on_submit=False):
     uploaded = st.file_uploader("Upload weather Excel from ksgclimatedata.streamlit.app", type=["xlsx"])
-    system = st.radio("Choose system", ["LED", "Hybrid"], index=0)
 
     # Take common specifications
     st.header("Common parameters")
@@ -129,7 +130,7 @@ if "results" in st.session_state:
     res = st.session_state["results"]
 
     # --- Plot figure 1
-    st.pyplot(res["fig1"], use_container_width=True)
+    st.pyplot(res["fig1"], width='stretch')
   
     buf1 = io.BytesIO()  # creates a virtual container to hold binary data
     res["fig1"].savefig(buf1, format="png", dpi=300, bbox_inches="tight")  # save the figure data into the binary container
@@ -142,7 +143,7 @@ if "results" in st.session_state:
     )
 
     # --- Plot figure 2
-    st.pyplot(res["fig2"], use_container_width=True)
+    st.pyplot(res["fig2"], width='stretch')
 
     buf2 = io.BytesIO()  # creates a virtual container to hold binary data
     res["fig2"].savefig(buf2, format="png", dpi=300, bbox_inches="tight")  # save the figure data into the binary container
@@ -161,7 +162,7 @@ if "results" in st.session_state:
             "DLI AL": "{:.1f}",
             "Elec Cons (kWh/m2)": "{:.2f}"
         }),
-        use_container_width=True
+        width="stretch"
     )
 
     st.download_button(
